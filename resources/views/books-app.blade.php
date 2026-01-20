@@ -406,7 +406,8 @@
                         .map(([key, value]) => `<${key}>${this.escapeXml(value)}</${key}>`)
                         .join('');
 
-                    const soapEnvelope = `<?xml version="1.0" encoding="UTF-8"?>
+                    const xmlDeclaration = '<' + '?xml version="1.0" encoding="UTF-8"?' + '>';
+                    const soapEnvelope = xmlDeclaration + `
 <SOAP-ENV:Envelope 
     xmlns:SOAP-ENV="http://schemas.xmlsoap.org/soap/envelope/" 
     xmlns:ns1="urn:BookService"
