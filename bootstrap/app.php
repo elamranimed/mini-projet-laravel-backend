@@ -16,6 +16,9 @@ return Application::configure(basePath: dirname(__DIR__))
             'soap',
             'soap/*'
         ]);
+        
+        // Ajouter le middleware CORS globalement
+        $middleware->append(\App\Http\Middleware\CorsMiddleware::class);
     })
     ->withExceptions(function (Exceptions $exceptions): void {
         //

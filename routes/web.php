@@ -4,13 +4,13 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\SoapServerController;
 
 Route::get('/', function () {
-    return view('welcome');
+    return redirect('/books-app');
 });
 
-Route::get('/books-app.html', function () {
-    return file_get_contents(public_path('books-app.html'));
+Route::get('/books-app', function () {
+    //return file_get_contents(public_path('books-app.html'));
+    return view('books-app');
 });
 
-// SOAP Routes
 Route::post('/soap', [SoapServerController::class, 'handle']);
 Route::get('/soap/wsdl', [SoapServerController::class, 'wsdl']);

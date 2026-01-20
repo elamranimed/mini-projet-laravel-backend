@@ -233,7 +233,7 @@
             
             <!-- Alerts -->
             <div v-if="alert" :class="'alert alert-' + alert.type">
-                {{ alert.message }}
+                @{{ alert.message }}
             </div>
 
             <!-- OPÉRATION 1: CREATE -->
@@ -259,7 +259,7 @@
                         </div>
                     </div>
                     <button type="submit" class="btn-create" :disabled="loading">
-                        ✅ {{ loading ? 'CRÉATION...' : 'CRÉER LE LIVRE' }}
+                        ✅ @{{ loading ? 'CRÉATION...' : 'CRÉER LE LIVRE' }}
                     </button>
                 </form>
             </div>
@@ -268,7 +268,7 @@
             <div class="crud-section">
                 <h2><span class="operation-badge badge-read">2️⃣ READ ALL</span> Afficher Tous les Livres</h2>
                 <button @click="loadAllBooks" class="btn-read" :disabled="loading">
-                    📚 {{ loading ? 'CHARGEMENT...' : 'CHARGER TOUS LES LIVRES' }}
+                    📚 @{{ loading ? 'CHARGEMENT...' : 'CHARGER TOUS LES LIVRES' }}
                 </button>
             </div>
 
@@ -281,7 +281,7 @@
                         <input type="number" id="searchId" v-model="searchId" min="1" placeholder="Ex: 1">
                     </div>
                     <button @click="searchBook" class="btn-search" :disabled="loading">
-                        🔎 {{ loading ? 'RECHERCHE...' : 'RECHERCHER' }}
+                        🔎 @{{ loading ? 'RECHERCHE...' : 'RECHERCHER' }}
                     </button>
                 </div>
             </div>
