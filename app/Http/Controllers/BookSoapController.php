@@ -29,7 +29,19 @@ class BookSoapController extends Controller
             $book = Book::find($id);
             return $book
                 ? $this->respond(['status' => 'success', 'data' => $book->toArray()])
-                : $this->respond(['status' => 'error', 'message' => 'Book not found']);
+                : $this->respond(['status' => 'error', 'message' => 'Livre non trouvé']);
+        } catch (\Throwable $e) {
+            return $this->respond(['status' => 'error', 'message' => $e->getMessage()]);
+        }
+    }
+
+    public function getBooksByAuthor($author)
+    {
+        try {
+            $books = Book::where('author', 'LIKE', '%' . $author . '%')->get();
+            return $books->isNotEmpty()
+                ? $this->respond(['status' => 'success', 'data' => $books->toArray()])
+                : $this->respond(['status' => 'error', 'message' => 'Aucun livre trouvé pour cet auteur']);
         } catch (\Throwable $e) {
             return $this->respond(['status' => 'error', 'message' => $e->getMessage()]);
         }

@@ -57,6 +57,13 @@ class SoapServerController extends Controller
         <part name="return" type="xsd:string"/>
     </message>
 
+    <message name="getBooksByAuthorRequest">
+        <part name="author" type="xsd:string"/>
+    </message>
+    <message name="getBooksByAuthorResponse">
+        <part name="return" type="xsd:string"/>
+    </message>
+
     <message name="createBookRequest">
         <part name="title" type="xsd:string"/>
         <part name="author" type="xsd:string"/>
@@ -94,6 +101,10 @@ class SoapServerController extends Controller
             <input message="tns:getBookRequest"/>
             <output message="tns:getBookResponse"/>
         </operation>
+        <operation name="getBooksByAuthor">
+            <input message="tns:getBooksByAuthorRequest"/>
+            <output message="tns:getBooksByAuthorResponse"/>
+        </operation>
         <operation name="createBook">
             <input message="tns:createBookRequest"/>
             <output message="tns:createBookResponse"/>
@@ -117,6 +128,11 @@ class SoapServerController extends Controller
         </operation>
         <operation name="getBook">
             <soap:operation soapAction="urn:BookService#getBook"/>
+            <input><soap:body use="encoded" namespace="urn:BookService" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/></input>
+            <output><soap:body use="encoded" namespace="urn:BookService" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/></output>
+        </operation>
+        <operation name="getBooksByAuthor">
+            <soap:operation soapAction="urn:BookService#getBooksByAuthor"/>
             <input><soap:body use="encoded" namespace="urn:BookService" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/></input>
             <output><soap:body use="encoded" namespace="urn:BookService" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/></output>
         </operation>

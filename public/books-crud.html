@@ -190,15 +190,15 @@
             <button onclick="loadAllBooks()" class="btn-read">📚 CHARGER TOUS LES LIVRES</button>
         </div>
 
-        <!-- OPÉRATION 3: READ ONE -->
+        <!-- OPÉRATION 3: READ BY AUTHOR -->
         <div class="crud-section">
-            <h2><span class="operation-badge badge-search">3️⃣ READ ONE</span> Rechercher un Livre par ID</h2>
+            <h2><span class="operation-badge badge-search">3️⃣ SEARCH</span> Rechercher par Auteur</h2>
             <div style="display: flex; gap: 10px; align-items: end;">
                 <div class="form-group" style="flex: 1;">
-                    <label for="searchId">🔍 ID du Livre</label>
-                    <input type="number" id="searchId" min="1" placeholder="Ex: 1">
+                    <label for="searchAuthor">🔍 Nom de l'Auteur</label>
+                    <input type="text" id="searchAuthor" placeholder="Ex: George Orwell">
                 </div>
-                <button onclick="searchBook()" class="btn-search">🔎 RECHERCHER</button>
+                <button onclick="searchByAuthor()" class="btn-search">🔎 RECHERCHER</button>
             </div>
         </div>
 
@@ -391,44 +391,45 @@
             }
         }
 
-        // OPÉRATION 3: READ ONE (SEARCH)
-        async function searchBook() {
-            const id = document.getElementById('searchId').value;
+        // OPÉRATION 3: SEARCH BY AUTHOR
+        async function searchByAuthor() {
+            const author = document.getElementById('searchAuthor').value;
             
-            if (!id) {
-                showAlert('⚠️ SEARCH: Entrez un ID', 'error');
+            if (!author) {
+                showAlert('⚠️ SEARCH: Entrez un nom d\'auteur', 'error');
                 return;
             }
 
             try {
-                showAlert(`🔍 SEARCH: Recherche du livre ID ${id}...`, 'info');
-                const response = await soapRequest('getBook', { id: id });
+                showAlert(`🔍 SEARCH: Recherche de livres par "${author}"...`, 'info');
+                const response = await soapRequest('getBooksByAuthor', { author: author });
                 
                 if (response.status === 'success') {
                     const booksList = document.getElementById('booksList');
                     booksList.innerHTML = '';
                     
-                    const book = response.data;
-                    const div = document.createElement('div');
-                    div.className = 'book-item';
-                    div.innerHTML = `
-                        <div class="book-info">
-                            <div class="book-title">${escapeHtml(book.title)}</div>
-                            <div class="book-details">
-                                👤 ${book.author || 'N/A'} | 
-                                📅 ${book.published_year || 'N/A'} | 
-                                🎭 ${book.genre || 'N/A'} | 
-                                🆔 ${book.id}
+                    response.data.forEach(book => {
+                        const div = document.createElement('div');
+                        div.className = 'book-item';
+                        div.innerHTML = `
+                            <div class="book-info">
+                                <div class="book-title">${escapeHtml(book.title)}</div>
+                                <div class="book-details">
+                                    👤 ${book.author || 'N/A'} | 
+                                    📅 ${book.published_year || 'N/A'} | 
+                                    🎭 ${book.genre || 'N/A'} | 
+                                    🆔 ${book.id}
+                                </div>
                             </div>
-                        </div>
-                        <div class="book-actions">
-                            <button onclick='showUpdateForm(${JSON.stringify(book)})' class="btn-update">✏️ MODIFIER</button>
-                            <button onclick="deleteBook(${book.id})" class="btn-delete">🗑️ SUPPRIMER</button>
-                        </div>
-                    `;
-                    booksList.appendChild(div);
+                            <div class="book-actions">
+                                <button onclick='showUpdateForm(${JSON.stringify(book)})' class="btn-update">✏️ MODIFIER</button>
+                                <button onclick="deleteBook(${book.id})" class="btn-delete">🗑️ SUPPRIMER</button>
+                            </div>
+                        `;
+                        booksList.appendChild(div);
+                    });
                     
-                    showAlert(`✅ SEARCH: Livre trouvé!`, 'success');
+                    showAlert(`✅ SEARCH: ${response.data.length} livre(s) trouvé(s)!`, 'success');
                 } else {
                     showAlert(`❌ SEARCH: ${response.message}`, 'error');
                 }
